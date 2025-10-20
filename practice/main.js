@@ -66,6 +66,7 @@ const server = http.createServer((req, res)=> {
             break;
                
         default:
+            res.writeHead(404, 'Not Found', {'accept' : 'application/json'})
             res.write('API endpoint is not found')
             res.end()
             break;
