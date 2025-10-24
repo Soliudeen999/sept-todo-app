@@ -1,13 +1,17 @@
-const dotenv = require('dotenv')
-const express = require('express');
+const express = require('express')
 
-dotenv.config()
+const app = express.Router()
 
-const app = express()
-
-app.use(express.json())
-
-const PORT = process.env.PORT || 4000
+app.get('/two-functions-called-route', 
+    (req, res, next) => {
+        console.log('Passed Function 1')
+        next()
+    },
+    function (req, res){
+        console.log('Last function called')
+        throw Error('Invalid Code')
+        return res.json({message : ' ALl functions called successfully'})
+    });
 
 app.get('/', (req, res) => res.json({message : 'Welcome to my app'}))
 
@@ -30,5 +34,4 @@ app.post('/register', (req, response) => {
     })
 })
 
-app.use((req, res) => res.status(404).json({message : 'Route not found'}))
-app.listen(PORT, () => console.log(`App is up and running on port: ${PORT}`))
+module.exports = app

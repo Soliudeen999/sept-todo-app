@@ -1,22 +1,25 @@
 {
   "name": "sept-todo",
   "version": "1.0.0",
-  "description": "",
-  "main": "main.js",
+  "description": "this is a planning app USERS DAILY TASKS",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon app.js"
+    "dev": "nodemon dev/app.js"
   },
   "keywords": [
     "planning",
-    "Clubbing"
+    "Todo",
+    "tasks",
+    "users"
   ],
-  "author": "",
+  "author": "Soliu Yusuf",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
+    "mongoose": "^8.19.2",
     "nodemon": "^3.1.10"
   }
 }
