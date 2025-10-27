@@ -27,7 +27,7 @@ app.get('/about', (request, response) => {
 })
 
 
-app.post('/register', (req, response) => {
+app.post('/test-register', (req, response) => {
     return response.json({
         message : "All Login Form Data",
         data : req.body || {}

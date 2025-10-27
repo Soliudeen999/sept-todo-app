@@ -6,6 +6,7 @@ const testRoutes = require('./routes/test')
 const userRoutes = require('./routes/user');
 const notFoundHandler = require('./middleware/not_found_handler');
 const errorHandler = require('./middleware/error_handler');
+const authRoutes = require('./routes/authentication');
 
 dotenv.config()
 
@@ -17,6 +18,7 @@ const PORT = process.env.PORT || 4000
 
 
 app.use(testRoutes)
+app.use(authRoutes)
 app.use(userRoutes)
 
 app.use(notFoundHandler)
