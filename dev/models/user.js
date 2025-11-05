@@ -5,7 +5,8 @@ const userTable = mongoose.Schema({
     email : {type : String, required : true, unique : true},
     password : {type : String, required : true},
     dob : {type : Date, required : false},
-    is_subscribed : {type : Boolean, default : false}
+    is_subscribed : {type : Boolean, default : false},
+    role : {type : String, default : 'student'}
 })
 
 module.exports = mongoose.model('user', userTable);
