@@ -1,4 +1,6 @@
 const express = require('express')
+const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
 
 const app = express.Router()
 const UserModel = require('../models/user');
@@ -24,10 +26,11 @@ app.post('/register', RegisterRequestValidator, async (req, response) => {
     if(existingUser)
         return response.status(400).json({message : "Email already exists"})
 
+    
     const newUser = new UserModel({
         fullname,
         email,
-        password,
+        password : bcrypt.hashSync(password, 12),
         dob
     });
 
@@ -50,11 +53,16 @@ app.post('/login', LoginRequestValidator, async (req, res) => {
 
     throw_if(!user, new ValidationError({path : email, msg : 'Invalid Credential'}));
 
-    throw_if(user.password !== password, new ValidationError({path : email, msg : 'Invalid Credential'}));
+    throw_if(!bcrypt.compareSync(password, user.password), new ValidationError({path : email, msg : 'Invalid Credential'}));
+
+    const token = jwt.sign({uid : user._id, role : user.role}, process.env.JWT_SECRET, {
+        expiresIn : Date.now() + (60 * 1000 * 60 * 24 *30)
+    })
 
     return res.json({
         message : 'Login Successfull',
-        user
+        user,
+        token
     })
 })
 

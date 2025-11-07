@@ -1,3 +1,4 @@
+const AppError = require("../errors/app_error");
 const ValidationError = require("../errors/validation_error");
 
 const errorHandler = (err, req, res, next) => {
@@ -17,6 +18,11 @@ const errorHandler = (err, req, res, next) => {
     })
   }
 
+  if(err instanceof AppError){
+    return res.status(err.http_code).json({
+      message : err.message
+    });
+  }
 
   if(process.env.APP_ENV !== 'development'){
     return res.status(500).json({
