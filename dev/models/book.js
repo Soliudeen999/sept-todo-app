@@ -6,7 +6,8 @@ const bookTable = mongoose.Schema({
     description : {type : String, required : true},
     content : String,
     author : String,
-    is_available : {type : Boolean, default : true},
+    stocked_count : {type : Number, default : 1},
+    remainder : {type : Number, default : 1},
     created_at : {type : Date, default : Date.now()}
 })
 

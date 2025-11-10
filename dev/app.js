@@ -8,6 +8,7 @@ const notFoundHandler = require('./middleware/not_found_handler');
 const errorHandler = require('./middleware/error_handler');
 const authRoutes = require('./routes/authentication');
 const booksRoutes = require('./routes/books');
+const borrowRequestsRoutes = require('./routes/borrow_requests');
 
 dotenv.config()
 
@@ -33,6 +34,7 @@ app.use(testRoutes)
 app.use(authRoutes)
 app.use(userRoutes)
 app.use(booksRoutes)
+app.use(borrowRequestsRoutes)
 
 app.use(notFoundHandler)
 
