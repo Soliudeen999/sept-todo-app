@@ -9,7 +9,20 @@ const { validationResult } = require('express-validator');
 const { throw_if } = require('../utils/helpers');
 const AppError = require('../errors/app_error');
 const ValidationError = require('../errors/validation_error');
+const multer = require('multer');
+const fs = require('fs');
 
+const storage = multer.diskStorage({
+    destination : (req, file, callback) => {
+        callback(null, 'uploads/')
+    },
+    filename : (req, file, callback) => {
+        const fileName = Date.now() + file.originalname.replaceAll(' ', '-')
+        callback(null, fileName)
+    }
+})
+
+const upload = multer({storage});
 
 app.get('/books', async (req, res) => {
     let allBooks = await BookModel.find({}).exec()
@@ -29,13 +42,25 @@ app.get('/books/:id', async(req, res) => {
     })
 });
 
-app.post('/books', mustBeAdmin, StoreBookRequestValidator, async (req, res) => {
+app.post('/books', upload.single('cover_image'), mustBeAdmin, StoreBookRequestValidator, async (req, res) => {
     const errors = validationResult(req);
         
     if(!errors.isEmpty()) {
         return res.status(422).json({errors : errors.array().map((err) => { 
             return {path : err.path, msg : err.msg}; 
         })});
+    }
+
+    const file = req.file
+
+    if(file.size > 1 *1024 *1024){
+        fs.unlinkSync(file.path);
+        throw new ValidationError([{path : 'cover_image', msg : 'File too large' }]);
+    }
+
+    if(!file.mimetype.startsWith('image')){
+        fs.unlinkSync(file.path);
+        throw new ValidationError([{path : 'cover_image', msg : 'Only Image file is expected' }]);
     }
 
     const {title, author } = req.body;
@@ -46,7 +71,9 @@ app.post('/books', mustBeAdmin, StoreBookRequestValidator, async (req, res) => {
 
     let code = `BK-${Date.now()}`;
 
-    const data = {...req.body, code};
+    const cover_image_path = req.file.path
+
+    const data = {...req.body, code, cover_image_path};
 
     const book = await new BookModel(data).save()
 

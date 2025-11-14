@@ -1,4 +1,4 @@
-const { body } = require('express-validator');
+const { body,  } = require('express-validator');
 
 const StoreBookRequestValidator = [
     body('title').notEmpty().isLength({min : 5, max: 250}),

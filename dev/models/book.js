@@ -8,7 +8,8 @@ const bookTable = mongoose.Schema({
     author : String,
     stocked_count : {type : Number, default : 1},
     remainder : {type : Number, default : 1},
-    created_at : {type : Date, default : Date.now()}
+    created_at : {type : Date, default : Date.now()},
+    cover_image_path : {type : String, required : false},
 })
 
 module.exports = mongoose.model('book', bookTable);

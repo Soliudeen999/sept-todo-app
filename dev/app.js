@@ -16,6 +16,7 @@ const app = express()
 
 app.use(express.json())
 
+
 const PORT = process.env.PORT || 4000
 
 app.get('/', (req, res) => {
@@ -29,6 +30,8 @@ app.get('/health', (req, res) => {
 app.post('my-info', (req, res) => {
     res.json({ data: req.body })
 })
+
+app.use('/uploads', express.static('uploads'))
 
 app.use(testRoutes)
 app.use(authRoutes)
