@@ -14,7 +14,9 @@ const { sendMail } = require('../utils/mailer');
 
 
 app.get('/borrow-requests', async (req, res) => {
-    const borrow_requests = await BorrowRequestModel.find({user : req.user}).populate('book').exec();
+    const params = {...req.query, user : req.user}
+
+    const borrow_requests = await BorrowRequestModel.find(params).populate('book').exec();
     return res.json({
         message : "Requests fetched successfully",
         data : borrow_requests

@@ -25,7 +25,8 @@ const storage = multer.diskStorage({
 const upload = multer({storage});
 
 app.get('/books', async (req, res) => {
-    let allBooks = await BookModel.find({}).exec()
+    const params = req.params
+    let allBooks = await BookModel.find(params).exec()
 
     return res.json({
         message : "All books fetched successful",
@@ -72,6 +73,10 @@ app.post('/books', upload.single('cover_image'), mustBeAdmin, StoreBookRequestVa
     let code = `BK-${Date.now()}`;
 
     const cover_image_path = req.file.path
+
+    if(req.body?.stocked_count){
+        req.body.remainder = req.body?.stocked_count
+    }
 
     const data = {...req.body, code, cover_image_path};
 

@@ -5,6 +5,7 @@ const StoreBookRequestValidator = [
     body('author').notEmpty().isLength({min : 5, max: 250}),
     body('content').notEmpty().isLength({min : 5, max: 250}),
     body('description').notEmpty().isLength({min : 5, max: 250}),
+    body('stocked_count').isNumeric().optional()
 ]
 
 const UpdateBookRequestValidator = [

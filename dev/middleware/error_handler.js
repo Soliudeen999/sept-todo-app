@@ -16,7 +16,7 @@ const errorHandler = (err, req, res, next) => {
         return {field : error.path, msg : error.msg}
       })
     })
-  }
+  } 
 
   if(err instanceof AppError){
     return res.status(err.http_code).json({
